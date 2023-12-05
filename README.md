@@ -1,7 +1,7 @@
 # tearsheet
-Web-based portfolio visualizer
 
+Web-based portfolio visualizer
 
 ## Develop
 
-`npx parcel serve src/html/index.html --dist-dir=dist`
+`npm run serve:dev`

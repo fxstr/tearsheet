@@ -4,18 +4,25 @@
   "description": "Web-based portfolio visualizer",
   "scripts": {
     "test:dev": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
-    "serve:dev": "npx parcel serve",
-    "build:live": "npx parcel build",
+    "serve:dev": "rm -rf dist && npx parcel serve",
+    "build:live": "rm -rf dist && npx parcel build",
     "test:live": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "test": "npm run test:live"
   },
+  "browserslist": [
+    ">1%", "not dead"
+  ],
   "targets": {
-    "main": {
-      "distDir": "dist",
-      "publicUrl": "./",
+    "default": {
       "source": "src/html/index.html",
-      "context": "browser"
+      "context": "browser",
+      "outputFormat": "global",
+      "distDir": "./dist",
+      "publicUrl": "/"
     }
+  },
+  "alias": {
+    "vue": "vue/dist/vue.esm-bundler.js"
   },
   "author": "Felix Steiner <felix_steiner@bluewin.ch>",
   "license": "ISC",

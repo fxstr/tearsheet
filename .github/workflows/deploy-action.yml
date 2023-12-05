@@ -17,14 +17,11 @@ jobs:
       - run: echo "✅ Tests successfully run"
       - run: npm run build:live
       - run: echo "✅ Live files created"
-      - name: Install doctl
-        uses: digitalocean/action-doctl@v2
+      - name: Publish to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
         with:
-          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-      - run: echo "✅ doctl installed"
-      - run: cd dist
-      - name: Deploy to DigitalOcean App Platform
-        run: doctl apps create-deployment ${{ secrets.DIGITALOCEAN_APP_ID }} -v
-        env:
-          APP_ID: ${{ secrets.DIGITALOCEAN_APP_ID }}
-      - run: echo "✅ App deployed"
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: ${{ secrets.CLOUDFLARE_PROJECT_NAME }}
+          workingDirectory: dist
+      - run: echo "✅ Published to Cloudflare Pages"

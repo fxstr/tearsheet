@@ -1,4 +1,4 @@
-import { reactive } from 'vue/dist/vue.esm-bundler'
+import { reactive } from 'vue'
 import TimeSeries from './TimeSeries';
 import parseCSV from '../helpers/parseCSV.mjs';
 
