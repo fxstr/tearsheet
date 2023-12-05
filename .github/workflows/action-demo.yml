@@ -1,6 +1,6 @@
-name: GitHub Actions Demo
+name: Test, Build and Deploy
 run-name: Deploy live site
-on: [push]
+on: [push, workflow_dispatch]
 jobs:
   Build-Files:
     runs-on: ubuntu-latest
