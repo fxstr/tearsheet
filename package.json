@@ -22,7 +22,8 @@
     }
   },
   "alias": {
-    "vue": "vue/dist/vue.esm-bundler.js"
+    "vue": "vue/dist/vue.esm-bundler.js",
+    "buffer": false
   },
   "author": "Felix Steiner <felix_steiner@bluewin.ch>",
   "license": "ISC",
