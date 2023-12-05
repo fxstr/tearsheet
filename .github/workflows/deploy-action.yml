@@ -24,4 +24,5 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: ${{ secrets.CLOUDFLARE_PROJECT_NAME }}
           workingDirectory: dist
+          directory: .
       - run: echo "✅ Published to Cloudflare Pages"
