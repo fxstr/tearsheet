@@ -4,7 +4,8 @@
   "description": "Web-based portfolio visualizer",
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
-    "dev": "npx parcel serve src/html/index.html --dist-dir=dist"
+    "dev": "npx parcel serve src/html/index.html --dist-dir=dist",
+    "live": "npx parcel build src/html/index.html --dist-dir=dist"
   },
   "author": "",
   "license": "ISC",
