@@ -31,7 +31,7 @@
     "bulma": "^0.9.4",
     "chart.js": "^4.4.0",
     "csv-parse": "^5.5.2",
-    "portfolio-analysis": "^1.0.1",
+    "portfolio-analysis": "^1.1.0",
     "vue": "^3.3.9",
     "date-fns": "^2.30.0",
     "chartjs-adapter-date-fns": "^3.0.0"
