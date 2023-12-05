@@ -4,12 +4,20 @@
   "description": "Web-based portfolio visualizer",
   "scripts": {
     "test:dev": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
-    "serve:dev": "npx parcel serve src/html/index.html --dist-dir=dist",
-    "build:live": "npx parcel build src/html/index.html --dist-dir=dist",
+    "serve:dev": "npx parcel serve",
+    "build:live": "npx parcel build",
     "test:live": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "test": "npm run test:live"
   },
-  "author": "",
+  "targets": {
+    "main": {
+      "distDir": "dist",
+      "publicUrl": "./",
+      "source": "src/html/index.html",
+      "context": "browser"
+    }
+  },
+  "author": "Felix Steiner <felix_steiner@bluewin.ch>",
   "license": "ISC",
   "dependencies": {
     "bulma": "^0.9.4",
