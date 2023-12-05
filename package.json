@@ -1,0 +1,33 @@
+{
+  "name": "tearsheet",
+  "version": "1.0.0",
+  "description": "Web-based portfolio visualizer",
+  "scripts": {
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
+    "dev": "npx parcel serve src/html/index.html --dist-dir=dist"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bulma": "^0.9.4",
+    "chart.js": "^4.4.0",
+    "csv-parse": "^5.5.2",
+    "portfolio-analysis": "^1.0.1",
+    "vue": "^3.3.9",
+    "date-fns": "^2.30.0",
+    "chartjs-adapter-date-fns": "^3.0.0"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.23.3",
+    "@parcel/resolver-default": "^2.10.3",
+    "@parcel/transformer-vue": "^2.10.3",
+    "eslint": "^8.55.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-vue": "^9.19.2",
+    "jest": "^29.7.0",
+    "parcel": "^2.10.3"
+  },
+  "@parcel/resolver-default": {
+    "packageExports": true
+  }
+}
