@@ -8,14 +8,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: echo "✅ Repo ${{ github.repository }} cloned to ${{ github.workspace }}"
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - run: npm ci
+      - run: pnpm install
       - run: echo "✅ Node modules installed"
-      - run: npm run test:live
+      - run: pnpm run test:live
       - run: echo "✅ Tests successfully run"
-      - run: npm run build:live
+      - run: pnpm run build:live
       - run: echo "✅ Live files created"
       - name: Publish to Cloudflare Pages
         uses: cloudflare/pages-action@v1
