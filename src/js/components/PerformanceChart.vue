@@ -1,8 +1,48 @@
 <script setup>
     import { watchEffect, ref, unref } from 'vue';
     import createChart from '../helpers/createChart';
+    import { getNormalizedAsSeries, getRelativeDrawdownAsSeries } from 'portfolio-analysis';
 
     let chart;
+
+    const getChartConfig = ({ data, name, color }) => ({
+        name,
+        x: data.map((item) => item.date),
+        type: 'line',
+        line: {
+            color,
+            width: 2,
+        }
+    });
+
+    /**
+     * Normalizes a timeSeries' performance and converts it for plotly
+     * @param {{x: Date, y: Number}[]} data 
+     * @param {string} name 
+     * @returns {type: string, x: Date[], y: Number[]}
+     */
+    const getPlotlyPerformance = ({ data, name, color }) => {
+        const normalized = getNormalizedAsSeries(data.map((item) => item.value))
+        return {
+            ...getChartConfig({ data, name, color }),
+            y: normalized,
+        };
+    };
+
+    /**
+     * Gets relative drawodowns for a series and formats them for Plotly
+     * @param {{x: Date, y: Number}[]} data
+     * @param {string} name 
+     * @returns {type: string, x: Date[], y: Number[]}
+     */
+     const getPlotlyDrawdowns = ({ data, name, color }) => {
+        const drawdowns = getRelativeDrawdownAsSeries(data.map((item) => item.value));
+        return {
+            ...getChartConfig({ data, name, color }),
+            yaxis: 'y2',
+            y: drawdowns,
+        };
+    }
 
     const props = defineProps({
         timeSeries: Array,
@@ -19,21 +59,19 @@
             return;
         }
         console.log('Update chart for %d timeSeries in %o', props.timeSeries.length, container);
-        const dataForCharts = props.timeSeries
-            .filter((item) => item.visible)
-            .map((item) => ({
-                label: item.name,
-                data: item.data.map((entry) => ({
-                    x: entry.date.toISOString(),
-                    y: entry.value,
-                }))
-            }));
-        console.log('Data for charts', dataForCharts);
+
+        const visibleTimeSeries = props.timeSeries.filter((item) => item.visible);
+        performances = visibleTimeSeries.map((series) => getPlotlyPerformance(series));
+        dradowns = visibleTimeSeries.map((series) => getPlotlyDrawdowns(series));
+        console.log('dds', dradowns);
+        const dataForCharts = [...performances, ...dradowns];
+        console.log('perf', performance, 'dd', dradowns);
         chart = createChart({ container, data: dataForCharts });
+
     });
 
 </script>
 
 <template>
-    <canvas ref="chartContainer"></canvas>
+    <div ref="chartContainer"></div>
 </template>

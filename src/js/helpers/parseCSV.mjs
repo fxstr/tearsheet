@@ -10,6 +10,7 @@ import { parse } from 'csv-parse/sync';
  * @returns {object}            Parsed CSV content
  */
 export default (text) => {
+    console.log('parse', text.substring, 100);
     const parsed = parse(text, { skip_empty_lines: true });
     const [head, ...body] = parsed;
     const colunNames = head.slice(1);
@@ -18,4 +19,4 @@ export default (text) => {
         data: body.map((row) => ({ x: new Date(row[0]), y: parseFloat(row[index + 1]) }))
     }));
     return cols;
-}
+};

@@ -1,8 +1,13 @@
+<script setup>
+    import { inject } from 'vue';
+    const notifications = inject('notifications');
+</script>
+
 <template>
     <div class="section">
-        <div class="notification is-primary">
-            Successfully added new data: SPY from 1970 to 2023
-            <button class="delete"></button>
+        <div class="notification" :class="{ 'is-primary': notification.type === 'info', 'is-danger': notification.type === 'error' }" v-for="notification in notifications.getAll()">
+            {{ notification.message }}
+            <button class="delete" @click="() => notifications.delete(notification)"></button>
         </div>
     </div>
 </template>

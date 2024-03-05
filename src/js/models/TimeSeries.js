@@ -1,14 +1,12 @@
 import { ref } from 'vue';
 import { 
-    getMaxAsSeries,
-    getRelativeDrawdownAsSeries,
     getMaxRelativeDrawdown,
-    getRelativeChangeAsSeries,
-    getAverage,
-    getRelativeTimeInMarket,
     getCAGR,
     getCalmar,
+    getStandardDeviation,
     getSortino,
+    getSharpe,
+    getLinearRegressionCAGR,
 } from 'portfolio-analysis'
 
 /**
@@ -22,7 +20,15 @@ export default class {
     color = '#000000'
     visible = ref(true)
 
-    constructor({ data, name } = {}) {
+    /**
+     * We can't define color in here because the whole palette needs to be generated beforehand
+     * and assuming it's final amout of items.
+     * @param {Object} args
+     * @param {{ date: Date, value: Number }[]} args.data
+     * @param {String} args.name
+     * @param {String} args.color
+     */
+    constructor({ data, name, color } = {}) {
 
         const validDate = item => Object.hasOwnProperty.call(item, 'date') && 
             item.date instanceof Date;
@@ -39,14 +45,19 @@ export default class {
 
         this.data = data;
         this.name = name;
+        this.color = color || this.color;
 
         const values = data.map(({ value }) => value);
-        const startDate = data.at(0).date;
-        const endDate = data.at(-1).date;
+        const dates = data.map(({ date }) => date);
+        const startDate = dates.at(0);
+        const endDate = dates.at(-1);
         this.cagr = getCAGR(values, startDate, endDate);
         this.sortino = getSortino(values);
         this.maxDD = getMaxRelativeDrawdown(values);
         this.calmar = getCalmar(values, startDate, endDate);
+        this.sharpe = getSharpe(values, startDate, endDate);
+        this.linRegCAGR = getLinearRegressionCAGR(values, dates);
+        this.stdDev = getStandardDeviation(values);
 
     }
 
