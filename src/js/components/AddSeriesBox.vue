@@ -1,7 +1,9 @@
 <script setup>
-    import { watch } from 'vue';
+    import { watch, inject } from 'vue';
     import readFiles from '../helpers/readFiles';
     import modifySearchParams from '../helpers/modifySearchParams';
+
+    const notifications = inject('notifications');
 
     const props = defineProps({
         timeSeriesCollection: {
@@ -13,11 +15,15 @@
     const emit = defineEmits(['fileUploaded', 'fileUrlAdded', 'changeAddSeriesBoxVisibility']);
 
     const handleUpload = async (event) => {
-        const allContent = await readFiles(event.target);
-        allContent.forEach((fileContent) => {
-            props.timeSeriesCollection.addFromCSV(fileContent);
-        });
-        emit('fileUploaded');
+        try {
+            const allContent = await readFiles(event.target);
+            allContent.forEach((fileContent) => {
+                props.timeSeriesCollection.addFromCSV(fileContent);
+            });
+            emit('fileUploaded');
+        } catch (err) {
+            notifications.add(`Could not read file: ${err.message}`, 'error');
+        }
     };
 
     // If box becomes visible, scroll to it to make sure user notice it

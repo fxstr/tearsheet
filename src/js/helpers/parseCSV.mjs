@@ -19,11 +19,11 @@ export default (text) => {
         data: body.map((row, rowIndex) => {
             const date = new Date(row[0]);
             if (Number.isNaN(date.getTime())) {
-                throw new Error(`Expected row ${rowIndex} (0-based) of first column to contain a valid date, got ${row[0]} instead.`);
+                throw new Error(`Expected row "${rowIndex}" (0-based) of first column to contain a valid date, got "${row[0]}" instead.`);
             }
             const value = parseFloat(row[columnIndex + 1]);
             if (Number.isNaN(value)) {
-                throw new Error(`Expected row ${rowIndex} (0-based) of column ${columnName} to contain a valid number, got ${row[columnIndex + 1]} instead.`);
+                throw new Error(`Expected row "${rowIndex}" (0-based) of column "${columnName}" to contain a valid number, got "${row[columnIndex + 1]}" instead.`);
             }
             return { x: date, y: value }
         }),
