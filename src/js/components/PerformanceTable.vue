@@ -38,25 +38,25 @@
       indicator: 'calmar',
       abbreviation: 'Calmar',
       name: 'Calmar (CAGR 1 yr / Max. DD)',
-      size: 'regular',
       format: (value) => value.toFixed(1),
     }, {
       indicator: 'sortino',
       name: 'Sortino',
-      size: 'regular',
       format: (value) => value.toFixed(1),
     }, {
       indicator: 'stdDev',
       name: 'Standard Deviation',
       abbreviation: 'Std Dev',
-      size: 'regular',
       format: (value) => value.toFixed(1),
     }, {
       indicator: 'sharpe',
       name: 'Sharpe',
-      size: 'regular',
       format: (value) => value.toFixed(1),
-    }]
+    }, {
+      indicator: 'relativeTimeInMarket',
+      name: 'In Market (approx.)',
+      format: (value) => `${(value * 100).toFixed(0)}%`,
+    }];
 </script>
 
 <template>

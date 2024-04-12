@@ -8,6 +8,7 @@ import {
     getSharpe,
     getLinearRegressionCAGR,
     getRobustRatio,
+    getRelativeTimeInMarket,
 } from 'portfolio-analysis';
 import createId from '../helpers/createId';
 
@@ -114,6 +115,10 @@ export default class {
 
         this.robustRatio = computed(() => (
             getRobustRatio(getValues(this.data), getDates(this.data))
+        ));
+
+        this.relativeTimeInMarket = computed(() => (
+            getRelativeTimeInMarket(getValues(this.data))
         ));
     }
 }

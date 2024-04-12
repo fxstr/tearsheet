@@ -23,7 +23,6 @@
     if (fileURLs.length) isAddSeriesBoxVisible.value = false;
     const handleFileURLAdded = (url) => {
         updateAddSeriesBoxVisibility(false);
-        console.log('add url', url);
         fileURLs.push(url);
     };
 

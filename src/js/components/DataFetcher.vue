@@ -1,5 +1,10 @@
 <script>
-    import { inject, defineComponent, watch, computed } from 'vue';
+    import {
+        inject,
+        defineComponent,
+        watch,
+        computed,
+    } from 'vue';
 
     export default defineComponent({
         render: () => null,
