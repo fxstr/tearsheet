@@ -5,9 +5,17 @@
 
 <template>
     <div class="section">
-        <div class="notification" :class="{ 'is-primary': notification.type === 'info', 'is-danger': notification.type === 'error' }" v-for="notification in notifications.getAll()">
+        <div
+            v-for="notification in notifications.getAll()"
+            :key="notification.id"
+            class="notification"
+            :class="{ 'is-primary': notification.type === 'info', 'is-danger': notification.type === 'error' }"
+        >
             {{ notification.message }}
-            <button class="delete" @click="() => notifications.delete(notification)"></button>
+            <button
+                class="delete"
+                @click="() => notifications.delete(notification)"
+            />
         </div>
     </div>
 </template>

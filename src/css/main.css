@@ -2,10 +2,6 @@ body {
     min-height: 100vh;
 }
 
-.can-drop {
-    box-shadow: inset 0 0 300px hsl(204, 86%, 53%);
-}
-
 .is-sticky {
     position: sticky;
     top: 0;

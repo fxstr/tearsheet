@@ -1,3 +1,5 @@
+import createId from '../helpers/createId';
+
 export default class {
 
     constructor(message, type = 'info') {
@@ -9,5 +11,6 @@ export default class {
         }
         this.message = message;
         this.type = type;
+        this.id = createId();
     }
 };

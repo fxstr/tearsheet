@@ -3,12 +3,26 @@ import TimeSeries from './TimeSeries';
 import parseCSV from '../helpers/parseCSV.mjs';
 import createPalette from 'google-palette';
 
-const notification = inject('notifications');
-
 /**
  * Model for a list/array/collection of TimeSeries
  */
 export default class {
+
+    #colors;
+    #fromDateReference;
+    #toDateReference;
+    timeSeries = reactive([]);
+
+    /**
+     * @param {Object} args
+     * @param {vue.Reference} args.fromDateReference
+     * @param {vue.Reference} args.toDateReference
+     */
+    constructor({ fromDateReference, toDateReference } = {}) {
+        this.#createColors();
+        this.#fromDateReference = fromDateReference;
+        this.#toDateReference = toDateReference;
+    }
 
     /**
      * Create color palette with the total amount of expected colors we will use, then pass
@@ -17,32 +31,35 @@ export default class {
      * Randomize palette as the original palette is rainbowy where similar colors are close to
      * each other
      */
-    #colors = createPalette('tol-rainbow', 12)
-        .map((item) => ({ item, order: Math.random() }))
-        .sort((a, b) => a.order - b.order)
-        .map(({ item }) => item);
-    timeSeries = reactive([]);
+    #createColors() {
+        this.#colors = createPalette('tol-rainbow', 12)
+            .map((item) => ({ item, order: Math.random() }))
+            .sort((a, b) => a.order - b.order)
+            .map(({ item }) => item);
+    }
 
-    add(timeSeries) {
+    #add(timeSeries) {
         this.timeSeries.push(timeSeries);
     }
 
     addFromCSV(text) {
-        try {
-            const parsed = parseCSV(text);
-            parsed.forEach(({ data, name }) => {
-                const transformedData = data.map(({ x, y }) => (
-                    { date: new Date(x), value: parseFloat(y) }
-                ));
-                console.log('colors', this.#colors);
-                const color = `#${this.#colors[this.timeSeries.length % this.#colors.length]}`;
-                console.log('color', color);
-                this.add(new TimeSeries({ data: transformedData, name, color }));
+        const parsed = parseCSV(text);
+        console.log(parsed);
+        parsed.forEach(({ data, name: columnName }) => {
+            // Go through columns, transform data
+            const transformedData = data.map(({ x, y }) => (
+                { date: new Date(x), value: parseFloat(y) }
+            ));
+            const color = `#${this.#colors[this.timeSeries.length % this.#colors.length]}`;
+            const timeSeries = new TimeSeries({
+                data: transformedData,
+                name: columnName,
+                color,
+                fromDateReference: this.#fromDateReference,
+                toDateReference: this.#toDateReference,
             });
-        } catch (err) {
-            console.error(err);
-            notification.add(`Could not parse CSV file: ${err.message}`, 'error');
-        }
+            this.#add(timeSeries);
+        });
     }
 
 };

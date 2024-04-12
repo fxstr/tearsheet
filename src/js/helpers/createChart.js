@@ -8,24 +8,28 @@ var layout = {
     xaxis: {
     },
     yaxis: {
-        // fixedrange: true,
-    },
-    yaxis1: {
+        // https://stackoverflow.com/questions/42043633/format-y-axis-as-percent-in-plot-ly
+        // https://d3js.org/d3-format
         domain: [0.33, 1],
-        title: 'Performance',
     },
     yaxis2: {
         domain: [0, 0.33],
         title: 'Drawdowns',
+        // See yaxis 1
+        tickformat: '.1%',
     }
   };
 
 export default ({ data, container } = {}) => {
-    Plotly.newPlot(
-        container,
-        data,
-        layout,
-        { scrollZoom: true },
-    );
+    return {
+        // Also return Plotly reference to use e.g. relayout from the outside
+        plotly: Plotly,
+        chart: Plotly.newPlot(
+            container,
+            data,
+            layout,
+            { scrollZoom: true },
+        ),
+    };
     
 };

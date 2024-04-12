@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 import Notification from './Notification'
 
-class NotificationCollection {
+export default class NotificationCollection {
 
     #notifications = ref([]);
 
@@ -23,13 +23,4 @@ class NotificationCollection {
         return this.#notifications.value;
     }
 
-};
-
-/**
- * Make NotificationCollection available as a Vue plugin
- */
-export default {
-    install: (app) => {
-        app.provide('notifications', new NotificationCollection());
-    }
 };

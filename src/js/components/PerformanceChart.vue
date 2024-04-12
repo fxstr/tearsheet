@@ -1,9 +1,11 @@
 <script setup>
+    // Don't use chart.js because it does not support subplots.
     import { watchEffect, ref, unref } from 'vue';
     import createChart from '../helpers/createChart';
     import { getNormalizedAsSeries, getRelativeDrawdownAsSeries } from 'portfolio-analysis';
 
     let chart;
+    let Plotly;
 
     const getChartConfig = ({ data, name, color }) => ({
         name,
@@ -45,14 +47,17 @@
     }
 
     const props = defineProps({
-        timeSeries: Array,
+        timeSeries: {
+            type: Array,
+            required: true,
+        }
     });
 
     const chartContainer = ref(null);
 
     // When container is ready, create the chart
-    watchEffect(() => {
-        if (chart) chart.destroy();
+    watchEffect(async () => {
+        if (chart) Plotly.purge(chart);
         const container = unref(chartContainer);
         if (container === null) {
             console.log('Chart container not ready');
@@ -66,12 +71,31 @@
         console.log('dds', dradowns);
         const dataForCharts = [...performances, ...dradowns];
         console.log('perf', performance, 'dd', dradowns);
-        chart = createChart({ container, data: dataForCharts });
+        const chartResult = createChart({ container, data: dataForCharts });
+        Plotly = chartResult.plotly;
+        chart = await chartResult.chart;
+        console.log('chart is now', chart);
+    });
 
+    window.addEventListener('resize', () => {
+        // Woohoo: This seems to be the only working solution: First, set height/width to 0 in
+        // order to enable a size *reduction* (offsetWidth will always at least be the plot's
+        // previous size), only then manually measure out the container and use those sizes
+        // for Plotly
+        const container = unref(chartContainer);
+        console.log('relayout', container);
+        Plotly.relayout(container, {
+            height: 0,
+            width: 0,
+        });
+        Plotly.relayout(container, {
+            height: container.offsetHeight,
+            width: container.offsetWidth,
+        });
     });
 
 </script>
 
 <template>
-    <div ref="chartContainer"></div>
+    <div ref="chartContainer" />
 </template>

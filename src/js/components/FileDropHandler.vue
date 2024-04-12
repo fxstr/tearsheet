@@ -1,10 +1,18 @@
 <script setup>
-    import { ref } from 'vue';
+    import { ref, inject } from 'vue';
     import readFiles from '../helpers/readFiles';
 
-    let indicateDropTarget = ref(false);
+    const notifications = inject('notifications')
+    const indicateDropTarget = ref(false);
 
-    const props = defineProps(['timeSeriesCollection']);
+    const props = defineProps({
+        timeSeriesCollection: {
+            type: Object,
+            required: true,
+        },
+    });
+
+    const emit = defineEmits('fileUploaded');
 
     const handleDragEnter = () => {
         indicateDropTarget.value = true;
@@ -17,9 +25,15 @@
     const handleDrop = async (event) => {
         indicateDropTarget.value = false;
         const allContent = await readFiles(event.dataTransfer);
-        for (const fileContent of allContent) {
-            props.timeSeriesCollection.addFromCSV(fileContent);
-        }
+        allContent.forEach((fileContent) => {
+            try {
+                props.timeSeriesCollection.addFromCSV(fileContent);
+                notifications.add('Successfully added CSV file');
+            } catch (err) {
+                notifications.add(`Could not add CSV file: ${err.message}`, 'error');
+            }
+        });
+        emit('fileUploaded');
     };
 
     const handleDragOver = () => {
@@ -29,7 +43,7 @@
 
 <template>
     <div
-        :class="{ 'can-drop': indicateDropTarget }"
+        :class="{ 'can-drop': indicateDropTarget, 'file-drop-handler': true}"
         @dragenter.prevent="handleDragEnter"
         @dragleave.prevent="handleDragLeave"
         @dragover.prevent="handleDragOver"
@@ -38,3 +52,13 @@
         <slot>Loading Content …</slot>
     </div>
 </template>
+
+<style scoped>
+    .file-drop-handler {
+        min-height: 100vh;
+    }
+
+    .can-drop {
+        box-shadow: inset 0 0 300px hsl(204, 86%, 53%);
+    }
+</style>
