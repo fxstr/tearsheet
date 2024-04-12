@@ -66,7 +66,7 @@
         console.log('Update chart for %d timeSeries in %o', props.timeSeries.length, container);
 
         const visibleTimeSeries = props.timeSeries.filter((item) => item.visible);
-        performances = visibleTimeSeries.map((series) => getPlotlyPerformance(series));
+        const performances = visibleTimeSeries.map((series) => getPlotlyPerformance(series));
         dradowns = visibleTimeSeries.map((series) => getPlotlyDrawdowns(series));
         console.log('dds', dradowns);
         const dataForCharts = [...performances, ...dradowns];

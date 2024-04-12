@@ -5,8 +5,8 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "test:dev": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
-    "serve:dev": "rm -rf dist && npx parcel serve src/html/index.html",
-    "build:live": "rm -rf dist && npx parcel build src/html/index.html",
+    "serve:dev": "rm -rf dist && npx parcel serve --target default",
+    "build:live": "rm -rf dist && npx parcel build --target default",
     "test:live": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "test": "pnpm run test:live"
   },
@@ -14,6 +14,15 @@
     ">1%",
     "not dead"
   ],
+  "targets": {
+    "default": {
+      "source": "src/html/index.html",
+      "context": "browser",
+      "outputFormat": "global",
+      "distDir": "dist",
+      "publicUrl": "/"
+    }
+  },
   "alias": {
     "vue": "vue/dist/vue.esm-bundler.js"
   },
