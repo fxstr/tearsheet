@@ -21,6 +21,7 @@
                 props.timeSeriesCollection.addFromCSV(fileContent);
             });
             emit('fileUploaded');
+            notifications.add(`Successfully added file.`, 'info');
         } catch (err) {
             notifications.add(`Could not read file: ${err.message}`, 'error');
         }

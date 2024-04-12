@@ -30,7 +30,7 @@ test('throws helpful error on invalid date', () => {
 "2023-01-01","13.2","12.7"
 "noDate","13.4","12.1"
 `;
-    expect(() => parseCSV(input)).toThrow(/row 1 \(0-based\) of first column to contain a valid date/);
+    expect(() => parseCSV(input)).toThrow(/row "1" \(0-based\) of first column to contain a valid date/);
 });
 
 test('throws helpful error on invalid number', () => {
@@ -39,5 +39,5 @@ test('throws helpful error on invalid number', () => {
 "2023-01-01","13.2","12.7"
 "2023-01-02","notANumber","12.1"
 `;
-    expect(() => parseCSV(input)).toThrow(/row 1 \(0-based\) of column SPY to contain a valid number/);
+    expect(() => parseCSV(input)).toThrow(/row "1" \(0-based\) of column "SPY" to contain a valid number/);
 });
