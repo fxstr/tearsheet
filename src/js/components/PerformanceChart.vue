@@ -67,7 +67,7 @@
 
         const visibleTimeSeries = props.timeSeries.filter((item) => item.visible);
         const performances = visibleTimeSeries.map((series) => getPlotlyPerformance(series));
-        dradowns = visibleTimeSeries.map((series) => getPlotlyDrawdowns(series));
+        const dradowns = visibleTimeSeries.map((series) => getPlotlyDrawdowns(series));
         console.log('dds', dradowns);
         const dataForCharts = [...performances, ...dradowns];
         console.log('perf', performance, 'dd', dradowns);
