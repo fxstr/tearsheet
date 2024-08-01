@@ -10,3 +10,13 @@ body {
 .scroll-container {
     height: 100%;
 }
+
+/**
+* The left colum is is-narrow, the right one fills the rest. If its content is wider than the
+* screen, it will overflow; therefore, we have to manually acjust overflow-x so that we can
+* scroll a wide table within its container.
+*/
+.performance-container,
+.performance-table-container {
+    overflow-x: auto;
+}

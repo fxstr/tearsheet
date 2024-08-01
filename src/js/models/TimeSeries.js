@@ -14,9 +14,11 @@ import createId from '../helpers/createId';
 
 const getValues = (data) => data.value.map(({ value }) => value);
 const getDates = (data) => data.value.map(({ date }) => date);
-// Returns a function that we'll use as a filter function later; checks if from/to date filter
-// exists and is valid and if yes, compares an entry of the timeSeries to it. We use a factory
-// function in order to reduce duplicate code.
+/**
+ * Returns a function that we'll use as a filter function later; checks if from/to date filter
+ * exists and is valid and if yes, compares an entry of the timeSeries to it. We use a factory
+ * function in order to reduce duplicate code.
+ */
 const createMatcher = (dateFilterValue, lowerFilter = true) => (
     (value) => {
         // There's no filter: return true
@@ -35,7 +37,7 @@ const createMatcher = (dateFilterValue, lowerFilter = true) => (
  * Model for a TimeSeries
  */
 export default class {
-    // { date: Date, value: number }[]
+    /* type { date: Date, value: number }[] */
     data = [];
 
     id = createId();
@@ -51,6 +53,13 @@ export default class {
     #toDateReference;
 
     #originalData;
+
+    /**
+     * If the column name contains parameters (in the form of key:value), store them here. They're
+     * mainly used to display heat maps across multiple TimeSeries.
+     */
+    parameters = {};
+
 
     /**
      * We can't define color in here because the whole palette needs to be generated beforehand
@@ -78,7 +87,6 @@ export default class {
             const matchesFrom = createMatcher(this.#fromDateReference.value);
             const matchesTo = createMatcher(this.#toDateReference.value, false);
             const data = this.#originalData.filter((item) => matchesFrom(item) && matchesTo(item));
-            console.log('data filtered by dates', data);
             return data;
         });
 

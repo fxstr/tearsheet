@@ -1,5 +1,5 @@
 <script setup>
-    import { watch, inject } from 'vue';
+    import { watch, inject, computed } from 'vue';
     import readFiles from '../helpers/readFiles';
     import modifySearchParams from '../helpers/modifySearchParams';
 
@@ -13,6 +13,10 @@
         isAddSeriesBoxVisible: Boolean,
     });
     const emit = defineEmits(['fileUploaded', 'fileUrlAdded', 'changeAddSeriesBoxVisibility']);
+    
+    const hasAtLeastOneTimeSeries = computed(() => (
+        props.timeSeriesCollection.timeSeries.length > 0
+    ));
 
     const handleUpload = async (event) => {
         try {
@@ -63,9 +67,12 @@
                 </div>
                 <div class="level-right">
                     <div class="level-item">
+                        <!-- As long as not Time series was added (especially in the initial
+                            state) let users not close the add time series box -->
                         <button
                             class="delete"
                             @click="$emit('changeAddSeriesBoxVisibility', false)"
+                            v-if="hasAtLeastOneTimeSeries"
                         />
                     </div>
                 </div>

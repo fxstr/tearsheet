@@ -10,7 +10,6 @@ const readFile = (file) => {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.addEventListener('load', (event) => {
-            console.log('result', event.target.result);
             resolve(event.target.result);
         });
         reader.addEventListener('error', (err) => {
