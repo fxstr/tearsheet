@@ -8,8 +8,10 @@ import {
     getSharpe,
     getLinearRegressionCAGR,
     getRobustRatio,
+    getCumulativeReturn,
     getRelativeTimeInMarket,
 } from 'portfolio-analysis';
+import parseParameters from '../helpers/parseParameters';
 import createId from '../helpers/createId';
 
 const getValues = (data) => data.value.map(({ value }) => value);
@@ -58,7 +60,7 @@ export default class {
      * If the column name contains parameters (in the form of key:value), store them here. They're
      * mainly used to display heat maps across multiple TimeSeries.
      */
-    parameters = {};
+    parameters = new Map();
 
 
     /**
@@ -78,6 +80,7 @@ export default class {
         this.color = color;
         this.#fromDateReference = fromDateReference;
         this.#toDateReference = toDateReference;
+        this.parameters = parseParameters(name);
 
         this.#setupComputedIndicators();
     }
@@ -127,6 +130,10 @@ export default class {
 
         this.relativeTimeInMarket = computed(() => (
             getRelativeTimeInMarket(getValues(this.data))
+        ));
+
+        this.cumulativeReturn = computed(() => (
+            getCumulativeReturn(getValues(this.data))
         ));
     }
 }

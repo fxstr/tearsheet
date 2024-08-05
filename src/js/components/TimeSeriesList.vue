@@ -1,8 +1,9 @@
 <!--
-    Ddisplays a list of time series and allow the user to toggle their visibility.
+    Displays a list of time series and allow the user to toggle their visibility.
 -->
 <script setup>
     import { computed } from 'vue';
+    import formatName from '../helpers/formatName';
 
     const props = defineProps({
         timeSeries: {
@@ -41,12 +42,14 @@
             :key="series.id"
             class="field"
         >
-            <label class="checkbox">
+            <label
+                class="checkbox is-family-monospace has-text-weight-semibold"
+            >
                 <input
                     v-model="series.visible"
                     type="checkbox"
                 >
-                {{ series.name }}
+                {{ formatName(series, ' · ') }}
             </label>
         </div>
         <div class="field mt-6">

@@ -9,3 +9,6 @@ Publicly available under [ridger.io](https://ridger.io/).
 # Develop
 
 `npx pnpm run serve:dev`
+
+# Tests
+`npx pnpm run test:dev`

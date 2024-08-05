@@ -1,6 +1,7 @@
 <script setup>
     import { computed } from 'vue';
     import PerformanceTableRow from './PerformanceTableRow.vue';
+    import formatName from '../helpers/formatName';
 
     const props = defineProps({
         timeSeries: {
@@ -30,6 +31,11 @@
       size: 'large',
       format: (value) => `${(value * 100).toFixed(1)}`,
     }, {
+      indicator: 'cumulativeReturn',
+      name: 'Cumulative Return',
+      abbreviation: 'Cum Return',
+      format: (value) => `${(value * 100).toFixed(1)}%`,
+    }, {
       indicator: 'cagr',
       name: 'Compound Annual Growth Rate',
       abbreviation: 'CAGR',
@@ -54,7 +60,8 @@
       format: (value) => value.toFixed(1),
     }, {
       indicator: 'relativeTimeInMarket',
-      name: 'In Market (approx.)',
+      name: 'Relative Time in Market (not in market = unchanged bars)',
+      abbreviation: 'In Market (approx.)',
       format: (value) => `${(value * 100).toFixed(0)}%`,
     }];
 </script>
@@ -67,8 +74,8 @@
                 <th
                     v-for="entry in visibleTimeSeries"
                     :key="entry.id"
+                    v-html="formatName(entry, '<br/>')"
                 >
-                    {{ entry.name }}
                 </th>
             </tr>
         </thead>
