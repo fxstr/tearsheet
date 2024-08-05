@@ -135,12 +135,34 @@
             </div>
 
             <div class="pt-5 has-text-grey notification">
-                <p>Make sure your CSV is structured as follows:</p>
+                <h1>Instructions</h1>
+                <p>Use the following structure for your CSV files:</p>
                 <ul>
-                    <li>The first column should contain dates</li>
-                    <li>The subsequent columns may contain one series per column</li>
-                    <li>A column's head will be used as the serie's name</li>
+                    <li>The first column contains dates.</li>
+                    <li>The subsequent columns contain one series per column.</li>
+                    <li>A column's head will be used as the series' name.</li>
+                    <li>Use <code>parameter=value</code> (with value being a number) in the head to compare series in a heatmap</li>
                 </ul>
+                <h4 class="mt-6">Example</h4>
+                <table class="is-family-monospace has-text-weight-semibold">
+                    <tr>
+                        <tr>
+                            <td>Date</td>
+                            <td>fast=10, slow=50</td>
+                            <td>fast=15, slow=75</td>
+                        </tr>
+                        <tr>
+                            <td>2024-01-01</td>
+                            <td>127</td>
+                            <td>183</td>
+                        </tr>
+                        <tr>
+                            <td>2024-01-02</td>
+                            <td>129</td>
+                            <td>181</td>
+                        </tr>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>
