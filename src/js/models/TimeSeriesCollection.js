@@ -44,7 +44,6 @@ export default class {
 
     addFromCSV(text) {
         const parsed = parseCSV(text);
-        console.log(parsed);
         parsed.forEach(({ data, name: columnName }) => {
             // Go through columns, transform data
             const transformedData = data.map(({ x, y }) => (
@@ -60,6 +59,44 @@ export default class {
             });
             this.#add(timeSeries);
         });
+    }
+
+    /**
+     * Returns the names of all timeSeries' parameters (taken from their column names)
+     * @returns {String[]}
+     */
+    getAllParameters() {
+        return [...this.timeSeries.reduce((previous, timeSeries) => (
+            new Set([...previous, ...timeSeries.parameters.keys()])
+        ), new Set())];
+    }
+
+    /**
+     * Returns all values for a given parameter, as long as they belong to a visible timeSeries,
+     * sorted ascending
+     * @param {String} parameterName - Name of the parameter, see @method getAllParameters
+     * @return {Float[]}
+     */
+    getAllVisibleValuesForParameter(parameterName) {
+        return [...this.timeSeries.reduce((previous, timeSeries) => {
+            if (!timeSeries.visible) return previous;
+            return new Set([...previous, timeSeries.parameters.get(parameterName)])
+        }, new Set())].sort((a, b) => a - b);
+    }
+
+    /**
+     * Returns all timeSeries that match with a given parameter set
+     * @param {[string, float][]} parameterValueSets - Array of tuples, where the first element is
+     * the parameter name and the second element, e.g. [['base', 5], ['factor', 2]]
+     * @returns {TimeSeries[]}
+     */
+    getTimeSeriesForParametersAndValues(parameterValueSets) {
+        console.log('parameterValueSets', parameterValueSets);
+        return this.timeSeries.filter((timeSeries) => (
+            parameterValueSets.every(([parameterName, value]) => (
+                timeSeries.parameters.get(parameterName) === value
+            ))
+        ));
     }
 
 };

@@ -6,6 +6,7 @@
     import NotificationCollection from '../models/NotificationCollection';
     import AddSeriesBox from './AddSeriesBox.vue';
     import FileDropHandler from './FileDropHandler.vue';
+    import HeatMap from './HeatMap.vue';
     import DataFetcher from './DataFetcher.vue';
     import TimeSeriesList from './TimeSeriesList.vue';
     import PerformanceChart from './PerformanceChart.vue';
@@ -17,7 +18,10 @@
     provide('notifications', notifications);
 
     const isAddSeriesBoxVisible = ref(true);
-    const updateAddSeriesBoxVisibility = (value) => { isAddSeriesBoxVisible.value = value; };
+    const updateAddSeriesBoxVisibility = (value) => {
+        console.log('Update add series box visibility to', value);
+        isAddSeriesBoxVisible.value = value;
+    };
 
     const fileURLs = reactive(readSearchParams('file-url'));
     // If there's an file passed through the URL, hide the add series box
@@ -129,6 +133,9 @@
                     </div>
                     <div class="box performance-table-container">
                         <PerformanceTable :time-series="timeSeriesCollection.timeSeries" />
+                    </div>
+                    <div class="box">
+                        <HeatMap :time-series-collection="timeSeriesCollection" />
                     </div>
                 </div>
             </div>

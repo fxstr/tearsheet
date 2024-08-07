@@ -30,6 +30,10 @@
             && new Date(props.fromDate).getTime() >= new Date(props.toDate).getTime()
     );
 
+    const updateVisibilityOfAllTimeSeries = (value) => {
+        props.timeSeries.forEach((series) => { series.visible = value; });
+    };
+
 </script>
 
 <template>
@@ -52,35 +56,39 @@
                 {{ formatName(series, ' · ') }}
             </label>
         </div>
-        <div class="field mt-6">
-            <label class="label">From:</label>
-            <input
-                class="input"
-                type="date"
-                :value="fromDate"
-                @input="emit('update:fromDate', $event.target.value)"
-            >
-        </div>
-        <div class="field">
-            <label class="label">To:</label>
-            <input
-                class="input"
-                type="date"
-                :value="toDate"
-                @input="emit('update:toDate', $event.target.value)"
-            >
-        </div>
-        <div
-            v-if="doDatesOverlap"
-            class="notification is-danger"
-        >
-            To date must be greater than from date.
-        </div>
-        <button
-            class="button mt-6"
-            @click="$emit('changeAddSeriesBoxVisibility', true)"
-        >
-            Add series …
-        </button>
     </div>
+
+    <button class="button is-ghost" @click="updateVisibilityOfAllTimeSeries(false)">Select none</button>
+    <button class="button is-ghost" @click="updateVisibilityOfAllTimeSeries(true)">Select all</button>
+
+    <div class="field mt-6">
+        <label class="label">From:</label>
+        <input
+            class="input"
+            type="date"
+            :value="fromDate"
+            @input="emit('update:fromDate', $event.target.value)"
+        >
+    </div>
+    <div class="field">
+        <label class="label">To:</label>
+        <input
+            class="input"
+            type="date"
+            :value="toDate"
+            @input="emit('update:toDate', $event.target.value)"
+        >
+    </div>
+    <div
+        v-if="doDatesOverlap"
+        class="notification is-danger"
+    >
+        To date must be greater than from date.
+    </div>
+    <button
+        class="button mt-6"
+        @click="$emit('changeAddSeriesBoxVisibility', true)"
+    >
+        Add series …
+    </button>
 </template>

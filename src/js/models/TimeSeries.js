@@ -86,6 +86,7 @@ export default class {
     }
 
     #setupComputedIndicators() {
+        console.log('Start setting up indicators');
         this.data = computed(() => {
             const matchesFrom = createMatcher(this.#fromDateReference.value);
             const matchesTo = createMatcher(this.#toDateReference.value, false);
@@ -116,9 +117,12 @@ export default class {
             return getSharpe(getValues(this.data), dates.at(0), dates.at(-1));
         });
 
-        this.linRegCAGR = computed(() => (
-            getLinearRegressionCAGR(getValues(this.data), getDates(this.data))
-        ));
+        this.linRegCAGR = computed(() => {
+            const start = new Date().getTime();
+            const result = getLinearRegressionCAGR(getValues(this.data), getDates(this.data))
+            console.log('Time to calculate linRegCAGR:', new Date().getTime() - start);
+            return result;
+        });
 
         this.stdDev = computed(() => (
             getStandardDeviation(getValues(this.data))
@@ -135,5 +139,6 @@ export default class {
         this.cumulativeReturn = computed(() => (
             getCumulativeReturn(getValues(this.data))
         ));
+        console.log('Done setting up indicators');
     }
 }

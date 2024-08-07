@@ -35,7 +35,7 @@
 
 <template>
     <tr class="{ }">
-        <td :class="{ 'is-size-5 has-text-weight-semibold': isLarge }">
+        <td :class="{ 'is-size-5 is-sticky-table-head has-text-weight-semibold has-background-white	': isLarge, 'is-sticky-table-head has-background-white	': !isLarge }">
             <abbr v-if="props.abbreviation" :title="props.name">
                 {{ props.abbreviation }}
             </abbr>
@@ -45,7 +45,7 @@
         </td>
         <td
 			      v-for="entry in values"
-			      :class="{ 'is-size-5 has-text-weight-semibold is-family-monospace has-text-right': isLarge, 'is-family-monospace pl-4 has-text-right': !isLarge }"
+			      :class="{ 'is-size-5 has-text-weight-semibold is-family-monospace has-text-right has-background-white	': isLarge, 'is-family-monospace pl-4 has-text-right has-background-white	': !isLarge }"
 		    >
             {{ format(entry[indicator]) }}
         </td>

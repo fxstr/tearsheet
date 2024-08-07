@@ -68,13 +68,10 @@
         const visibleTimeSeries = props.timeSeries.filter((item) => item.visible);
         const performances = visibleTimeSeries.map((series) => getPlotlyPerformance(series));
         const dradowns = visibleTimeSeries.map((series) => getPlotlyDrawdowns(series));
-        console.log('dds', dradowns);
         const dataForCharts = [...performances, ...dradowns];
-        console.log('perf', performance, 'dd', dradowns);
         const chartResult = createChart({ container, data: dataForCharts });
         Plotly = chartResult.plotly;
         chart = await chartResult.chart;
-        console.log('chart is now', chart);
     });
 
     window.addEventListener('resize', () => {
@@ -83,7 +80,7 @@
         // previous size), only then manually measure out the container and use those sizes
         // for Plotly
         const container = unref(chartContainer);
-        console.log('relayout', container);
+        if (!container) return;
         Plotly.relayout(container, {
             height: 0,
             width: 0,

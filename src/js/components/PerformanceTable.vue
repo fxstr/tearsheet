@@ -70,7 +70,7 @@
     <table class="table is-hoverable">
         <thead>
             <tr>
-                <th />
+                <th class="is-sticky-table-head" />
                 <th
                     v-for="entry in visibleTimeSeries"
                     :key="entry.id"

@@ -21,9 +21,11 @@
     const handleUpload = async (event) => {
         try {
             const allContent = await readFiles(event.target);
+            console.log('Adding files …');
             allContent.forEach((fileContent) => {
                 props.timeSeriesCollection.addFromCSV(fileContent);
             });
+            console.log('Files added.');
             emit('fileUploaded');
             notifications.add(`Successfully added file.`, 'info');
         } catch (err) {
