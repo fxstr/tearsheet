@@ -2,7 +2,7 @@
     import { ref, inject } from 'vue';
     import readFiles from '../helpers/readFiles';
 
-    const notifications = inject('notifications')
+    const notifications = inject('notifications');
     const indicateDropTarget = ref(false);
 
     const props = defineProps({
