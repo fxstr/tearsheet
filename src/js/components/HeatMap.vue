@@ -6,7 +6,7 @@
         timeSeriesCollection: {
             type: Object,
             required: true,
-        }
+        },
     });
     const chartContainer = ref(null);
     // Dropdown values
@@ -19,7 +19,7 @@
     /* Only display the chart once the container is ready */
     watchEffect(async () => {
         // At least x-axis and color must be selected to draw the chart
-        if (!xAxisParameter || !color) {
+        if (!xAxisParameter.value || !color.value) {
             if (chart) Plotly.purge(chart);
             return;
         }
@@ -30,9 +30,12 @@
             return;
         }
         // Docs for the data structure: https://plotly.com/javascript/heatmaps/#annotated-heatmap
-        const xValues = props.timeSeriesCollection.getAllVisibleValuesForParameter(xAxisParameter.value);
-        const yValues = props.timeSeriesCollection.getAllVisibleValuesForParameter(yAxisParameter.value);
+        const xValues = props.timeSeriesCollection
+            .getAllVisibleValuesForParameter(xAxisParameter.value);
+        const yValues = props.timeSeriesCollection
+            .getAllVisibleValuesForParameter(yAxisParameter.value);
         console.log('y values', yValues);
+
         // Data for heatmap is one array per row; therefore, we must start with the y axis (=rows)
         const matrix = yValues.map((y) => (
             xValues.map((x) => (
@@ -43,17 +46,21 @@
             ))
         ));
 
-
-        var data = [
+        const data = [
             {
                 z: matrix,
                 x: xValues,
                 y: yValues,
-                type: 'heatmap'
-            }
+                type: 'heatmap',
+            },
         ];
         console.log('Data for HeatMap is', data);
-        chart = Plotly.newPlot(container, data);        
+        // Docs for layout here: https://plotly.com/javascript/figure-labels/
+        const layout = {
+            xaxis: { title: xAxisParameter.value },
+            yaxis: { title: yAxisParameter.value },
+        }
+        chart = Plotly.newPlot(container, data, layout);
     });
 
     window.addEventListener('resize', () => {
@@ -85,32 +92,56 @@
     </p>
     <div v-else>
         <div class="field is-grouped is-grouped-multiline">
-            <div class="control">
-                <div class="select">
-                    <select v-model="xAxisParameter">
-                        <option v-for="parameter in props.timeSeriesCollection.getAllParameters()">
-                            {{ parameter }}
-                        </option>
-                    </select>
+            <div class="field">
+                <div class="label">x Axis</div>
+                <div class="control">
+                    <div class="select">
+                        <select v-model="xAxisParameter">
+                            <option
+                                v-for="parameter in props.timeSeriesCollection.getAllParameters()"
+                                :key="parameter"
+                            >
+                                {{ parameter }}
+                            </option>
+                        </select>
+                    </div>
                 </div>
             </div>
-            <div class="control">
-                <div class="select">
-                    <select v-model="yAxisParameter">
-                        <option v-for="parameter in props.timeSeriesCollection.getAllParameters()">
-                            {{ parameter }}
-                        </option>
-                    </select>
+            <div class="field">
+                <div class="label">y Axis</div>
+                <div class="control">
+                    <div class="select">
+                        <select v-model="yAxisParameter">
+                            <option
+                                v-for="parameter in props.timeSeriesCollection.getAllParameters()"
+                                :key="parameter"
+                            >
+                                {{ parameter }}
+                            </option>
+                        </select>
+                    </div>
                 </div>
             </div>
-            <div class="control">
+            <div class="field">
+                <div class="label">Color</div>
                 <div class="select">
                     <select v-model="color">
-                        <option value="robustRatio">Robust Ratio</option>
+                        <option value="robustRatio">
+                            Robust Ratio
+                        </option>
+                        <option value="linRegCAGR">
+                            Linear Regression CAGR
+                        </option>
+                        <option value="maxDD">
+                            Max. Drawdown
+                        </option>
+                        <option value="cagr">
+                            CAGR
+                        </option>
                     </select>
                 </div>
             </div>
         </div>
-        <div ref="chartContainer"></div>
+        <div ref="chartContainer" />
     </div>
 </template>

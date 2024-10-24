@@ -7,7 +7,6 @@ import createPalette from 'google-palette';
  * Model for a list/array/collection of TimeSeries
  */
 export default class {
-
     #colors;
     #fromDateReference;
     #toDateReference;
